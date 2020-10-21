@@ -12,6 +12,7 @@ namespace LargeShipPatcher
         {
             string jarPath;
 
+
             Console.WriteLine($"         LargeShipPatcher for Space Haven " + latestPatch);
             Console.WriteLine($"------------------------------------------------------------------");
             Console.WriteLine($"This patch allow ships of size 3x2, 2x3 and 3x3 to be build");
