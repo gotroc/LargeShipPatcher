@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using System.Reflection;
 
 namespace LargeShipPatcher
 {
@@ -13,7 +14,7 @@ namespace LargeShipPatcher
             string jarPath;
 
 
-            Console.WriteLine($"         LargeShipPatcher for Space Haven " + latestPatch);
+            Console.WriteLine($"          LargeShipPatcher {Assembly.GetExecutingAssembly().GetName().Version} for Space Haven");
             Console.WriteLine($"------------------------------------------------------------------");
             Console.WriteLine($"This patch allow ships of size 3x2, 2x3 and 3x3 to be build");
             Console.WriteLine($"It also increase the available ship points from 8 to 16");

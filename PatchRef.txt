@@ -1,0 +1,40 @@
+﻿0.10.0
+
+Ship points :
+	Patch 1 :
+		Class : fi\bugbyte\spacehaven\gui\GUI$SelectedElements$3.class
+		Method : clicked()
+		Dissambly/reassembly : direct hex edit
+		Change from : "int total = 8;"
+		Change to : "int total = 16;"
+		Comment : bytecode is BIPUSH 8 ISTORE_3, so hex is 10 08 3D -> edit to 10 10 3D
+		Patch the ship points check when claiming a vessel
+
+	Patch 2 :
+		Class : fi\bugbyte\spacehaven\gui\popups\SectorMap.class
+		Method : checkCreateShipState()
+		Dissambly/reassembly : CFR decompilation / JDK 1.8.0_151 compilation
+		Change from : "int totalPoints = 8;"
+		Change to : "int totalPoints = 16;"
+		Comment : patch the ship points check when building a new vessel
+
+Ship sizes :
+	Patch 1 :
+		Class : fi\bugbyte\spacehaven\gui\popups\SectorMap.class
+		Method : SectorMap(boolean isMoveShips, World world) (ctor)
+		Dissambly/reassembly : CFR decompilation / JDK 1.8.0_151 compilation
+		Find the "patterns" array population : 
+            this.patterns = new Array(false, 12);
+            this.patterns.add(new ShipPattern(new int[][]{{1}}));
+            this.patterns.add(new ShipPattern(new int[][]{{1, 1}}));
+            this.patterns.add(new ShipPattern(new int[][]{{1}, {1}}));
+            this.patterns.add(new ShipPattern(new int[][]{{1, 1, 1}}));
+            this.patterns.add(new ShipPattern(new int[][]{{1}, {1}, {1}}));
+            this.patterns.add(new ShipPattern(new int[][]{{1, 1}, {1, 1}}));
+		And add the 3 missing options :
+            this.patterns.add(new ShipPattern(new int[][]{{1, 1}, {1, 1}, {1, 1}}));
+            this.patterns.add(new ShipPattern(new int[][]{{1, 1, 1}, {1, 1, 1}}));
+            this.patterns.add(new ShipPattern(new int[][]{{1, 1, 1}, {1, 1, 1}, {1, 1, 1}}));
+		Comment : add the 2x3, 3x2 and 3x3 ship size options
+
+Reassembly notes : it seems necessary to include all the SectorMap* classes a they are all recompiled in the process
