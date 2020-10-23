@@ -12,8 +12,6 @@ namespace LargeShipPatcher
 {
     class Program
     {
-        static string latestPatch = "0.10.0-steam build 4";
-
         static string[] knownBuilds = new string[]
         {
             "steam build 2",

@@ -1,4 +1,4 @@
-## LargeShipPatcher v0.10.0-4
+## LargeShipPatcher v0.10.0
 
 ### A Space Haven mod
 
