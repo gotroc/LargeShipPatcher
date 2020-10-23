@@ -70,12 +70,26 @@ namespace LargeShipPatcher {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to ## LargeShipPatcher v0.10.0-4
+        ///
+        ///### A Space Haven mod
+        ///
+        ///#### Features
+        ///
+        ///- Allow ships of size 3x2, 2x3 and 3x3 to be build
+        ///- Increase the available ship points from 8 to 14
+        ///- Increase sector size from 8x8 to 10x10
+        ///- Allow changing the amount of system points per ship point
+        ///- Features can be tweaked by editing the `LargeShipPatcher.xml` file
+        ///- OSX/Linux support (**untested**)
+        ///
+        ///#### Instructions
+        ///- Copy the patcher in the same folder as `spacehaven.jar`
+        ///- Execute it as administrator (sudo on linux) [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static byte[] ReadMe {
+        internal static string ReadMe {
             get {
-                object obj = ResourceManager.GetObject("ReadMe", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("ReadMe", resourceCulture);
             }
         }
     }
