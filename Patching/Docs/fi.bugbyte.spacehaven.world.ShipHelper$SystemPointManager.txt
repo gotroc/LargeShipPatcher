@@ -1,0 +1,24 @@
+CLASS EDIT
+----------------------------------
+fi.bugbyte.spacehaven.world.ShipHelper$SystemPointManager
+Reason : set system points to value from config
+----------------------------------
+
+----------------------------------
+Edited method :
+getTotalPoints(int shipPoints)
+----------------------------------
+### FROM
+A:
+LINE A 595
+ICONST_4
+ILOAD shipPoints
+IMUL
+ISTORE sysPoints
+### TO
+A:
+LINE A 595
+GETSTATIC fi/bugbyte/framework/Settings.gModSystemPointsPerShipPoint I
+ILOAD shipPoints
+IMUL
+ISTORE sysPoints

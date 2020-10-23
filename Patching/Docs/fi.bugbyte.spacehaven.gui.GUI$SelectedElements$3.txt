@@ -1,0 +1,20 @@
+CLASS EDIT
+----------------------------------
+fi.bugbyte.spacehaven.gui.GUI$SelectedElements$3
+Reason : set ship points to settings variable
+----------------------------------
+
+----------------------------------
+Edited method :
+clicked()
+----------------------------------
+### FROM
+B:
+LINE B 5447
+BIPUSH 8
+ISTORE total
+### TO
+B:
+LINE B 5447
+GETSTATIC fi/bugbyte/framework/Settings.gModShipPoints I
+ISTORE total

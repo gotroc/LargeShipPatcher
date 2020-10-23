@@ -1,0 +1,137 @@
+CLASS EDIT
+----------------------------------
+fi.bugbyte.framework.Settings
+----------------------------------
+Added fields
+----------------------------------
+DEFINE PUBLIC STATIC Z gModEnableLargeShips
+DEFINE PUBLIC STATIC I gModShipPoints
+DEFINE PUBLIC STATIC I gModSystemPointsPerShipPoint
+DEFINE PUBLIC STATIC I gModSectorSize
+
+----------------------------------
+Edited method :
+loadSettings(String version)
+----------------------------------
+DEFINE PUBLIC STATIC loadSettings(Ljava/lang/String; version)V
+TRY EX_START EX_END CATCH(java/lang/Exception) EX_HANDLER
+#### START EDIT
+A:
+LINE A 1000
+INVOKESTATIC fi/bugbyte/framework/Settings.gModLoadSettings()V
+#### END EDIT
+B:
+LINE B 62
+ICONST_1
+PUTSTATIC fi/bugbyte/framework/Settings.autoCrashReport Z
+
+----------------------------------
+New method
+Reason : load settings from "gMod-Settings.xml"
+----------------------------------
+
+### COMPILED
+public static void gModLoadSettings() {
+    FastXMLReader.Element xmlData;
+    String path = Game.getLocalStoragePath();
+    File file = new File(path = path + "/gMod-Settings.xml");
+    if (file.exists() && (xmlData = FastXMLReader.parse(file)) != null) {
+        gModEnableLargeShips = xmlData.getBoolean("enableLargeShips", true);
+        gModSectorSize = xmlData.getInt("sectorSize", 10);
+        gModShipPoints = xmlData.getInt("shipPoints", 14);
+        gModSystemPointsPerShipPoint = xmlData.getInt("systemPointsPerShipPoint", 4);
+    } else {
+        gModEnableLargeShips = true;
+        gModSectorSize = 10;
+        gModShipPoints = 14;
+        gModSystemPointsPerShipPoint = 4;
+    }
+}
+
+### ASSEMBLY
+DEFINE PUBLIC STATIC gModLoadSettings()V
+A:
+LINE A 10
+INVOKESTATIC fi/bugbyte/framework/Game.getLocalStoragePath()Ljava/lang/String;
+ASTORE path
+B:
+LINE B 20
+NEW java/lang/StringBuilder
+DUP
+INVOKESPECIAL java/lang/StringBuilder.<init>()V
+ALOAD path
+INVOKEVIRTUAL java/lang/StringBuilder.append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+LDC "/gMod-Settings.xml"
+INVOKEVIRTUAL java/lang/StringBuilder.append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+INVOKEVIRTUAL java/lang/StringBuilder.toString()Ljava/lang/String;
+ASTORE path
+C:
+LINE C 30
+NEW java/io/File
+DUP
+ALOAD path
+INVOKESPECIAL java/io/File.<init>(Ljava/lang/String;)V
+ASTORE file
+D:
+LINE D 50
+ALOAD file
+INVOKEVIRTUAL java/io/File.exists()Z
+IFEQ K
+E:
+LINE E 60
+ALOAD file
+INVOKESTATIC fi/bugbyte/utils/FastXMLReader.parse(Ljava/io/File;)Lfi/bugbyte/utils/FastXMLReader$Element;
+ASTORE xmlData
+F:
+LINE F 70
+ALOAD xmlData
+IFNULL K
+G:
+LINE G 100
+ALOAD xmlData
+LDC "enableLargeShips"
+ICONST_1
+INVOKEVIRTUAL fi/bugbyte/utils/FastXMLReader$Element.getBoolean(Ljava/lang/String;Z)Z
+PUTSTATIC fi/bugbyte/framework/Settings.gModEnableLargeShips Z
+H:
+LINE H 110
+ALOAD xmlData
+LDC "sectorSize"
+BIPUSH 10
+INVOKEVIRTUAL fi/bugbyte/utils/FastXMLReader$Element.getInt(Ljava/lang/String;I)I
+PUTSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+I:
+LINE I 120
+ALOAD xmlData
+LDC "shipPoints"
+BIPUSH 14
+INVOKEVIRTUAL fi/bugbyte/utils/FastXMLReader$Element.getInt(Ljava/lang/String;I)I
+PUTSTATIC fi/bugbyte/framework/Settings.gModShipPoints I
+J:
+LINE J 130
+ALOAD xmlData
+LDC "systemPointsPerShipPoint"
+ICONST_4
+INVOKEVIRTUAL fi/bugbyte/utils/FastXMLReader$Element.getInt(Ljava/lang/String;I)I
+PUTSTATIC fi/bugbyte/framework/Settings.gModSystemPointsPerShipPoint I
+GOTO O
+K:
+LINE K 140
+ICONST_1
+PUTSTATIC fi/bugbyte/framework/Settings.gModEnableLargeShips Z
+L:
+LINE L 150
+BIPUSH 10
+PUTSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+M:
+LINE M 160
+BIPUSH 14
+PUTSTATIC fi/bugbyte/framework/Settings.gModShipPoints I
+N:
+LINE N 170
+BIPUSH 4
+PUTSTATIC fi/bugbyte/framework/Settings.gModSystemPointsPerShipPoint I
+O:
+LINE O 1000
+RETURN
+P:

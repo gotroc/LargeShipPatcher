@@ -1,0 +1,465 @@
+CLASS EDIT
+----------------------------------
+fi.bugbyte.spacehaven.gui.popups.SectorMap
+----------------------------------
+
+----------------------------------
+Edited method :
+SectorMap(boolean isMoveShips, World world)
+Reason : set sector size to settings variable
+----------------------------------
+K:
+LINE K 1650
+ALOAD this
+NEW fi/bugbyte/spacehaven/gui/popups/SectorMap$IsoTileMap
+DUP
+ALOAD this
+### SEARCH
+BIPUSH 8
+BIPUSH 8
+### REPLACE
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+### END
+ICONST_0
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap$IsoTileMap.<init>(Lfi/bugbyte/spacehaven/gui/popups/SectorMap;IIZ)V
+PUTFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.sector Lfi/bugbyte/spacehaven/gui/popups/SectorMap$IsoTileMap;
+
+
+----------------------------------
+Edited method :
+SectorMap(boolean isMoveShips, World world)
+Reason : add large ships variants
+----------------------------------
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap$ShipPattern.<init>([[I)V
+INVOKEVIRTUAL com/badlogic/gdx/utils/Array.add(Ljava/lang/Object;)V
+### START EDIT
+IFSTART:
+LINE IFSTART 2000
+GETSTATIC fi/bugbyte/framework/Settings.gModEnableLargeShips Z
+IFEQ BY ###CHANGE TO END
+ADDSIZE1:
+LINE ADDSIZE1 2001
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.patterns Lcom/badlogic/gdx/utils/Array;
+NEW fi/bugbyte/spacehaven/gui/popups/SectorMap$ShipPattern
+DUP
+ICONST_3
+ANEWARRAY [I
+DUP
+ICONST_0
+ICONST_2
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+AASTORE
+DUP
+ICONST_1
+ICONST_2
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+AASTORE
+DUP
+ICONST_2
+ICONST_2
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+AASTORE
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap$ShipPattern.<init>([[I)V
+INVOKEVIRTUAL com/badlogic/gdx/utils/Array.add(Ljava/lang/Object;)V
+ADDSIZE2:
+LINE ADDSIZE2 2002
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.patterns Lcom/badlogic/gdx/utils/Array;
+NEW fi/bugbyte/spacehaven/gui/popups/SectorMap$ShipPattern
+DUP
+ICONST_2
+ANEWARRAY [I
+DUP
+ICONST_0
+ICONST_3
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+DUP
+ICONST_2
+ICONST_1
+IASTORE
+AASTORE
+DUP
+ICONST_1
+ICONST_3
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+DUP
+ICONST_2
+ICONST_1
+IASTORE
+AASTORE
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap$ShipPattern.<init>([[I)V
+INVOKEVIRTUAL com/badlogic/gdx/utils/Array.add(Ljava/lang/Object;)V
+ADDSIZE3:
+LINE ADDSIZE3 2003
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.patterns Lcom/badlogic/gdx/utils/Array;
+NEW fi/bugbyte/spacehaven/gui/popups/SectorMap$ShipPattern
+DUP
+ICONST_3
+ANEWARRAY [I
+DUP
+ICONST_0
+ICONST_3
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+DUP
+ICONST_2
+ICONST_1
+IASTORE
+AASTORE
+DUP
+ICONST_1
+ICONST_3
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+DUP
+ICONST_2
+ICONST_1
+IASTORE
+AASTORE
+DUP
+ICONST_2
+ICONST_3
+NEWARRAY I
+DUP
+ICONST_0
+ICONST_1
+IASTORE
+DUP
+ICONST_1
+ICONST_1
+IASTORE
+DUP
+ICONST_2
+ICONST_1
+IASTORE
+AASTORE
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap$ShipPattern.<init>([[I)V
+INVOKEVIRTUAL com/badlogic/gdx/utils/Array.add(Ljava/lang/Object;)V
+### END EDIT
+CD:
+LINE CD 1739
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.playerShips Lcom/badlogic/gdx/utils/Array;
+INVOKEVIRTUAL com/badlogic/gdx/utils/Array.iterator()Lcom/badlogic/gdx/utils/Array$ArrayIterator;
+ASTORE s6
+
+----------------------------------
+Added methods
+Reason : helper methods to calculate GUI dimensions 
+and offsets when changing sector grid size
+----------------------------------
+DEFINE PRIVATE gModGetGuiXIncrease()F
+A:
+LINE A 1
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+BIPUSH 8
+ISUB
+BIPUSH 40
+IMUL
+I2F
+FRETURN
+----------------------------------
+DEFINE PRIVATE gModGetGuiYIncrease()F
+A:
+LINE A 1
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+BIPUSH 8
+ISUB
+BIPUSH 45
+IMUL
+I2F
+FRETURN
+
+----------------------------------
+Edited method
+setPos(Z resize)
+Reason : resize GUI when changing sector grid size
+----------------------------------
+###1 float w = (this.gModGetGuiXIncrease() + 1050.0f) * Settings.uiScale;
+###1 float h = (this.gModGetGuiYIncrease() + 700.0f) * Settings.uiScale;
+###1 ORIGINAL 
+J:
+LINE J 1826
+LDC 1050.0F
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSTORE w
+K:
+LINE K 1827
+LDC 700.0F
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSTORE h
+
+###1 EDITED
+L:
+LINE L 1826
+ALOAD this
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap.gModGetGuiXIncrease()F
+LDC 1050.0F
+FADD
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSTORE w
+M:
+LINE M 1827
+ALOAD this
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap.gModGetGuiYIncrease()F
+LDC 700.0F
+FADD
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSTORE h
+
+###2 this.line.setPos(this.skin.getPosX(), this.skin.getPosY() - (115.0f + this.gModGetGuiYIncrease() / 2.0f) * Settings.uiScale);
+###2 ORIGINAL
+Q:
+LINE Q 1833
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.line Lfi/bugbyte/framework/screen/NinePatch;
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosX()F
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 115.0F
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+INVOKEVIRTUAL fi/bugbyte/framework/screen/NinePatch.setPos(FF)V
+
+###2 EDITED
+Q:
+LINE Q 1833
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.line Lfi/bugbyte/framework/screen/NinePatch;
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosX()F
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 115.0F
+ALOAD this
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap.gModGetGuiYIncrease()F
+LDC 2.0F
+FDIV
+FADD
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+INVOKEVIRTUAL fi/bugbyte/framework/screen/NinePatch.setPos(FF)V
+
+###3 float sectorY = this.skin.getPosY() - (50.0f + this.gModGetGuiYIncrease() / 2.0f) * Settings.uiScale;
+###3 ORIGINAL
+Y:
+LINE Y 1858
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 50.0F
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+FSTORE sectorY
+
+###3 EDITED
+Y:
+LINE Y 1858
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 50.0F
+ALOAD this
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap.gModGetGuiYIncrease()F
+LDC 2.0F
+FDIV
+FADD
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+FSTORE sectorY
+
+###4 sectorY = this.skin.getPosY() - (290.0f + this.gModGetGuiYIncrease() / 2.0f) * Settings.uiScale;
+###4 ORIGINAL
+AK:
+LINE AK 1875
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 290.0F
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+FSTORE sectorY
+
+###4 EDITED
+AK:
+LINE AK 1875
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 290.0F
+ALOAD this
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap.gModGetGuiYIncrease()F
+LDC 2.0F
+FDIV
+FADD
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+FSTORE sectorY
+
+###5 this.garbageY = this.skin.getPosY() - (50.0f + this.gModGetGuiYIncrease() / 2.0f) * Settings.uiScale;
+###5 ORIGINAL
+CC:
+LINE CC 1952
+ALOAD this
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 50.0F
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+PUTFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.garbageY F
+
+###5 EDITED
+CC:
+LINE CC 1952
+ALOAD this
+ALOAD this
+GETFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.skin Lfi/bugbyte/gen/compiled/GuiSkin1;
+INVOKEVIRTUAL fi/bugbyte/gen/compiled/GuiSkin1.getPosY()F
+LDC 50.0F
+ALOAD this
+INVOKESPECIAL fi/bugbyte/spacehaven/gui/popups/SectorMap.gModGetGuiYIncrease()F
+LDC 2.0F
+FDIV
+FADD
+GETSTATIC fi/bugbyte/framework/Settings.uiScale F
+FMUL
+FSUB
+PUTFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.garbageY F
+
+----------------------------------
+Edited method
+checkCreateShipState()
+Reason : set ship points when ceating a new ship
+----------------------------------
+### FROM
+F:
+LINE F 2162
+BIPUSH 8
+ISTORE totalPoints
+
+### TO
+F:
+LINE F 2162
+GETSTATIC fi/bugbyte/framework/Settings.gModShipPoints I
+ISTORE totalPoints
+
+----------------------------------
+Edited method
+createNewShipInBox(int dir)
+Reason : set system points info string to the value defined in config
+----------------------------------
+### FROM
+S:
+LINE S 2150
+ALOAD this
+NEW java/lang/StringBuilder
+DUP
+INVOKESPECIAL java/lang/StringBuilder.<init>()V
+GETSTATIC fi/bugbyte/framework/Game.library Lfi/bugbyte/framework/library/AssetLibrary;
+LDC "1653"
+INVOKEVIRTUAL fi/bugbyte/framework/library/AssetLibrary.getTextById(Ljava/lang/String;)Lfi/bugbyte/framework/library/Text;
+INVOKEINTERFACE fi/bugbyte/framework/library/Text.getText()Ljava/lang/String;
+INVOKEVIRTUAL java/lang/StringBuilder.append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ALOAD s
+INVOKESTATIC fi/bugbyte/spacehaven/gui/popups/SectorMap$IsoShip.access$300(Lfi/bugbyte/spacehaven/gui/popups/SectorMap$IsoShip;)Lcom/badlogic/gdx/utils/Array;
+GETFIELD com/badlogic/gdx/utils/Array.size I
+ICONST_4 ### CHANGE THIS
+IMUL
+INVOKEVIRTUAL java/lang/StringBuilder.append(I)Ljava/lang/StringBuilder;
+INVOKEVIRTUAL java/lang/StringBuilder.toString()Ljava/lang/String;
+PUTFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.sysPoints Ljava/lang/String;
+
+### TO
+S:
+LINE S 2150
+ALOAD this
+NEW java/lang/StringBuilder
+DUP
+INVOKESPECIAL java/lang/StringBuilder.<init>()V
+GETSTATIC fi/bugbyte/framework/Game.library Lfi/bugbyte/framework/library/AssetLibrary;
+LDC "1653"
+INVOKEVIRTUAL fi/bugbyte/framework/library/AssetLibrary.getTextById(Ljava/lang/String;)Lfi/bugbyte/framework/library/Text;
+INVOKEINTERFACE fi/bugbyte/framework/library/Text.getText()Ljava/lang/String;
+INVOKEVIRTUAL java/lang/StringBuilder.append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+ALOAD s
+INVOKESTATIC fi/bugbyte/spacehaven/gui/popups/SectorMap$IsoShip.access$300(Lfi/bugbyte/spacehaven/gui/popups/SectorMap$IsoShip;)Lcom/badlogic/gdx/utils/Array;
+GETFIELD com/badlogic/gdx/utils/Array.size I
+GETSTATIC fi/bugbyte/framework/Settings.gModSystemPointsPerShipPoint I ### CHANGE THIS
+IMUL
+INVOKEVIRTUAL java/lang/StringBuilder.append(I)Ljava/lang/StringBuilder;
+INVOKEVIRTUAL java/lang/StringBuilder.toString()Ljava/lang/String;
+PUTFIELD fi/bugbyte/spacehaven/gui/popups/SectorMap.sysPoints Ljava/lang/String;

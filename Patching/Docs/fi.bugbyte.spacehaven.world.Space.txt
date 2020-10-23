@@ -1,0 +1,162 @@
+CLASS EDIT
+----------------------------------
+fi.bugbyte.spacehaven.world.Space
+Reason : set sector size to settings variable
+----------------------------------
+
+----------------------------------
+Edited method :
+toSpaceGrid(int c)
+----------------------------------
+### FROM
+A:
+LINE A 1336
+ICONST_0
+ISTORE i
+B:
+ILOAD i
+BIPUSH 8
+IF_ICMPGE G
+### TO
+A:
+LINE A 1336
+ICONST_0
+ISTORE i
+B:
+ILOAD i
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+IF_ICMPGE G
+
+----------------------------------
+Edited method :
+makeSectorMap()
+----------------------------------
+### FROM
+A:
+LINE A 2212
+BIPUSH 8
+BIPUSH 8
+MULTIANEWARRAY [[I 2
+ASTORE spaceGrid
+### TO
+A:
+LINE A 2212
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+MULTIANEWARRAY [[I 2
+ASTORE spaceGrid
+
+----------------------------------
+Edited method :
+spaceOutNewShips(Array<Ship> oldShips, Array<Ship> newShips)
+----------------------------------
+### FROM
+A:
+LINE A 2219
+BIPUSH 8
+BIPUSH 8
+MULTIANEWARRAY [[I 2
+ASTORE spaceGrid
+### TO
+A:
+LINE A 2219
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+MULTIANEWARRAY [[I 2
+ASTORE spaceGrid
+
+----------------------------------
+Edited method :
+gridXToShipX(int gridX, Ship ship)
+----------------------------------
+### FROM
+D:
+LINE D 2277
+ILOAD shipSizeX
+BIPUSH 11
+IMUL
+ICONST_4
+IDIV
+ISTORE offX
+
+### TO
+D:
+LINE D 2277
+ILOAD shipSizeX
+BIPUSH 11
+IMUL
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+IDIV
+ICONST_2
+IDIV
+ISTORE offX
+
+----------------------------------
+Edited method :
+gridYToShipY(int gridY, Ship ship)
+----------------------------------
+### FROM
+D:
+LINE D 2284
+ILOAD shipSizeY
+BIPUSH 11
+IMUL
+ICONST_4
+IDIV
+ISTORE offY
+
+### TO
+D:
+LINE D 2284
+ILOAD shipSizeY
+BIPUSH 11
+IMUL
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+IDIV
+ICONST_2
+IDIV
+ISTORE offY
+
+----------------------------------
+Edited method :
+moveShipToNewPos(int newGridX, int newGridY, Ship ship)
+----------------------------------
+### FROM
+F:
+LINE F 2295
+ILOAD shipSizeX
+BIPUSH 11
+IMUL
+ICONST_4
+IDIV
+ISTORE offX
+G:
+LINE G 2296
+ILOAD shipSizeY
+BIPUSH 11
+IMUL
+ICONST_4
+IDIV
+ISTORE offY
+
+### TO
+F:
+LINE F 2295
+ILOAD shipSizeX
+BIPUSH 11
+IMUL
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+IDIV
+ICONST_2
+IDIV
+ISTORE offX
+G:
+LINE G 2296
+ILOAD shipSizeY
+BIPUSH 11
+IMUL
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+IDIV
+ICONST_2
+IDIV
+ISTORE offY

@@ -1,0 +1,26 @@
+CLASS EDIT
+----------------------------------
+fi.bugbyte.spacehaven.SpaceHavenSettings
+----------------------------------
+
+----------------------------------
+Edited methods :
+getMapSizeX() / getMapSizeY()
+Reason : set grid size according to sector size
+Value must be 38 * grid size (ex : 456x456 for a 12x12 grid)
+----------------------------------
+### ORIGINAL :
+DEFINE PUBLIC STATIC getMapSizeX()I
+A:
+LINE A 30
+SIPUSH 304
+IRETURN
+
+### MODIFIED :
+DEFINE PUBLIC STATIC getMapSizeX()I
+A:
+LINE A 30
+GETSTATIC fi/bugbyte/framework/Settings.gModSectorSize I
+SIPUSH 38
+IMUL
+IRETURN

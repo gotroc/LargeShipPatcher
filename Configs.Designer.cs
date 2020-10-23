@@ -22,24 +22,24 @@ namespace LargeShipPatcher {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Patchs {
+    internal class Configs {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Patchs() {
+        internal Configs() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LargeShipPatcher.Patchs", typeof(Patchs).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LargeShipPatcher.Configs", typeof(Configs).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace LargeShipPatcher {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,21 +61,20 @@ namespace LargeShipPatcher {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized string similar to &lt;gModSettings enableLargeShips=&quot;true&quot; shipPoints=&quot;14&quot; systemPointsPerShipPoint=&quot;4&quot; sectorSize=&quot;10&quot; /&gt;.
         /// </summary>
-        public static byte[] _0_10_0_steam_build_2 {
+        internal static string LargeShipPatcher {
             get {
-                object obj = ResourceManager.GetObject("0.10.0-steam build 2", resourceCulture);
-                return ((byte[])(obj));
+                return ResourceManager.GetString("LargeShipPatcher", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] _0_10_0_steam_build_4 {
+        internal static byte[] ReadMe {
             get {
-                object obj = ResourceManager.GetObject("0.10.0-steam build 4", resourceCulture);
+                object obj = ResourceManager.GetObject("ReadMe", resourceCulture);
                 return ((byte[])(obj));
             }
         }
