@@ -25,7 +25,7 @@ https://github.com/gotroc/LargeShipPatcher
   - Enable or disable the extra large ship templates
 - `shipPoints`
   - Integer, stock default : 8, mod default : 14
-  - Amount of ship points available (stock default : 8, mod default : 14)
+  - Amount of ship points available
 - `systemPointsPerShipPoint`
   - Integer, stock default : 4, mod default : 4
   - Amount of system points per ship point
