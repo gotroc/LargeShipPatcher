@@ -11,7 +11,7 @@ https://github.com/gotroc/LargeShipPatcher
 - Increase sector size from 8x8 to 10x10
 - Allow changing the amount of system points per ship point
 - Features can be tweaked by editing the `LargeShipPatcher.xml` file
-- OSX/Linux support (**untested**)
+- Windows/OSX/Linux support
 
 #### Instructions
 - Copy the patcher in the same folder as `spacehaven.jar`
@@ -38,10 +38,7 @@ https://github.com/gotroc/LargeShipPatcher
 
 #### Remarks and known issues
 
-###### GOG version
-
-The patcher will only recognize automatically the Steam version of the game. 
-It will probably work with the GOG version, but you will have to select the adequate patch manually.
+None at the moment
 
 #### License
 This is free and unencumbered software released into the public domain.
