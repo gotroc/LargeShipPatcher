@@ -63,9 +63,9 @@ namespace LargeShipPatcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] _0_10_0_steam_build_2 {
+        public static byte[] _0_10_0_build_2 {
             get {
-                object obj = ResourceManager.GetObject("0.10.0-steam build 2", resourceCulture);
+                object obj = ResourceManager.GetObject("0.10.0_build 2", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace LargeShipPatcher {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        public static byte[] _0_10_0_steam_build_4 {
+        public static byte[] _0_10_0_build_4 {
             get {
-                object obj = ResourceManager.GetObject("0.10.0-steam build 4", resourceCulture);
+                object obj = ResourceManager.GetObject("0.10.0_build 4", resourceCulture);
                 return ((byte[])(obj));
             }
         }

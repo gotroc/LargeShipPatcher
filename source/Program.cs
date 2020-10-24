@@ -12,10 +12,10 @@ namespace LargeShipPatcher
 {
     class Program
     {
-        static string[] knownBuilds = new string[]
+        static List<GamePatch> knownVersions = new List<GamePatch>()
         {
-            "steam build 2",
-            "steam build 4"
+            new GamePatch("alpha 10", new Version(0, 10, 0), "build 2"),
+            new GamePatch("alpha 10", new Version(0, 10, 0), "build 4")
         };
 
         static void Main(string[] args)
@@ -83,19 +83,12 @@ namespace LargeShipPatcher
             string tempFilePath = Path.Combine(Path.GetDirectoryName(jarPath), "spacehaven.jar.temp");
             File.Copy(jarPath, tempFilePath, true);
 
-            List<Patch> patches = new List<Patch>();
-
-            ResourceSet resources = Patchs.ResourceManager.GetResourceSet(CultureInfo.InvariantCulture, true, true);
-            foreach (DictionaryEntry entry in resources)
-            {
-                patches.Add(new Patch(entry));
-            }
-            patches = patches.OrderBy(i => i.version).ToList();
-
             int entriesCount = 0;
             bool error = false;
             string versionString;
-            string build = string.Empty;
+            string versionNameString;
+            string buildString = string.Empty;
+            GamePatch matchingPatch = null;
             using (ZipArchive jarFile = ZipFile.Open(tempFilePath, ZipArchiveMode.Update))
             {
                 ZipArchiveEntry versionFile = jarFile.GetEntry("version.txt");
@@ -103,7 +96,29 @@ namespace LargeShipPatcher
                 Version version;
                 using (TextReader versionReader = new StreamReader(versionFile.Open()))
                 {
-                    versionString = versionReader.ReadLine().Trim();
+                    try
+                    {
+                        versionString = versionReader.ReadLine();
+                        if (versionString == null) throw new Exception();
+                    }
+                    catch (Exception)
+                    {
+                        versionString = string.Empty;
+                    }
+
+                    try
+                    {
+                        versionNameString = versionReader.ReadLine();
+                        if (versionNameString == null) throw new Exception();
+                    }
+                    catch (Exception)
+                    {
+                        versionNameString = string.Empty;
+                    }
+
+                    versionString = versionString.Trim();
+                    versionNameString = versionNameString.Trim();
+
                     try
                     {
                         version = new Version(versionString);
@@ -120,48 +135,47 @@ namespace LargeShipPatcher
                 using (TextReader mainClassReader = new StreamReader(mainClass.Open(), System.Text.Encoding.ASCII))
                 {
                     string classText = mainClassReader.ReadToEnd();
-                    foreach (string buildString in knownBuilds)
+                    foreach (GamePatch knownVersion in knownVersions.FindAll(p => p.version == version))
                     {
-                        if (classText.Contains(buildString))
+                        // note : this can fail, for example if there is a build 1 and the game is build 11, it will match the build 1
+                        if (classText.Contains(knownVersion.build, StringComparison.OrdinalIgnoreCase))
                         {
-                            build = buildString;
+                            buildString = knownVersion.build;
+                            matchingPatch = knownVersion;
                             break;
                         }
                     }
                 }
 
-                List<Patch> matchingVersionPatches = new List<Patch>();
+                List<GamePatch> matchingPatches = new List<GamePatch>();
                 if (version != null)
                 {
-                    matchingVersionPatches.AddRange(patches.FindAll(p => p.version == version));
+                    matchingPatches.AddRange(knownVersions.FindAll(p => p.version == version));
                 }
                 else
                 {
                     version = new Version(int.MaxValue, int.MaxValue);
                 }
 
-                if (matchingVersionPatches.Count == 0)
+                if (matchingPatches.Count == 0)
                 {
-                    matchingVersionPatches = patches.FindAll(p => p.version < version).OrderByDescending(i => i.version).Take(2).ToList();
-                    matchingVersionPatches.AddRange(patches.FindAll(p => p.version > version).OrderBy(i => i.version).Take(2));
+                    matchingPatches = knownVersions.FindAll(p => p.version < version).OrderByDescending(i => i.version).Take(2).ToList();
+                    matchingPatches.AddRange(knownVersions.FindAll(p => p.version > version).OrderBy(i => i.version).Take(2));
                 }
 
-                Patch matchingPatch = matchingVersionPatches.Find(p => p.build == build);
-
-                Console.WriteLine($"Found Space Haven version {versionString} - {(string.IsNullOrEmpty(build) ? "BUILD UNKNOWN" : build)}");
+                Console.WriteLine($"Found Space Haven {(string.IsNullOrEmpty(versionNameString) ? "RELEASE UNKNOWN" : versionNameString)}, version {versionString} - {(string.IsNullOrEmpty(buildString) ? "BUILD UNKNOWN" : buildString)}");
                 Console.WriteLine($"--------------------------------------------------------------------------");
                 if (matchingPatch == null)
                 {
                     startPatchSelect:
                     Console.WriteLine($"Unable to find a matching patch for this version");
                     Console.WriteLine($"You can use another available patch but this can cause issues and crashes.");
-                    for (int i = 0; i < matchingVersionPatches.Count; i++)
+                    for (int i = 0; i < matchingPatches.Count; i++)
                     {
-                        Patch patch = matchingVersionPatches[i];
-                        Console.WriteLine($"[{i}] {patch.versionString} - {patch.build}");
+                        Console.WriteLine($"[{i}] {matchingPatches[i]}");
                     }
                     Console.WriteLine($"Input a number for the patch you want to use and press enter");
-                    if (!int.TryParse(Console.ReadLine(), out int index) || index < 0 || index > matchingVersionPatches.Count - 1)
+                    if (!int.TryParse(Console.ReadLine(), out int index) || index < 0 || index > matchingPatches.Count - 1)
                     {
                         Console.WriteLine($"--------------------------------------------------------------------------");
                         Console.WriteLine("Error : bad input");
@@ -169,22 +183,20 @@ namespace LargeShipPatcher
                         goto startPatchSelect;
                     }
 
-                    matchingPatch = matchingVersionPatches[index];
+                    matchingPatch = matchingPatches[index];
                     Console.WriteLine("");
                     Console.WriteLine($"--------------------------------------------------------------------------");
                 }
-;
 
-                backupName = "spacehaven.jar_" + versionString + "_" + build.Replace(" ", "") + "_" + DateTime.Now.ToString("yyMMddHHmm");
+                backupName = "spacehaven.jar_" + versionString + "_" + buildString.Replace(" ", "") + "_" + DateTime.Now.ToString("yyMMddHHmm");
                 backupPath = Path.Combine(Path.GetDirectoryName(jarPath), backupName);
 
                 Console.WriteLine("Ready to patch - Do you want to keep a backup ? (y/n)");
                 if (Console.ReadKey(true).KeyChar == 'y')
                     doBackup = true;
 
-                using (ZipArchive patchFile = new ZipArchive(new MemoryStream(matchingPatch.GetZip)))
+                using (ZipArchive patchFile = new ZipArchive(new MemoryStream(matchingPatch.Patch)))
                 {
-                    
                     foreach (ZipArchiveEntry patchedEntry in patchFile.Entries)
                     {
                         if (!patchedEntry.FullName.EndsWith(".class"))
@@ -233,30 +245,34 @@ namespace LargeShipPatcher
 
 
 
-        private class Patch
+
+        private class GamePatch
         {
-            public string versionString;
+            public string versionName;
             public Version version;
             public string build;
-            private string fullname;
 
-            public byte[] GetZip => (byte[])Patchs.ResourceManager.GetObject(fullname);
-
-            public Patch(DictionaryEntry resourceManagerEntry)
+            public GamePatch(string versionName, Version version, string build)
             {
-                fullname = (string)resourceManagerEntry.Key;
-                string[] vInfo = fullname.Split('-');
-                versionString = vInfo[0].Trim();
-                version = new Version(versionString);
-                if (vInfo.Length > 1)
+                this.versionName = versionName;
+                this.version = version;
+                this.build = build;
+            }
+
+            public override string ToString()
+            {
+                return versionName + " - " + version.ToString(3) + " - " + build;
+            }
+
+            public byte[] Patch
+            {
+                get
                 {
-                    build = vInfo[1].Trim();
-                }
-                else
-                {
-                    build = string.Empty;
+                    string patchName = version.ToString(3) + "_" + build;
+                    return (byte[])Patchs.ResourceManager.GetObject(patchName);
                 }
             }
+
         }
 
 
