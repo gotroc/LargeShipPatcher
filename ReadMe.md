@@ -38,7 +38,7 @@ https://github.com/gotroc/LargeShipPatcher
 
 #### Remarks and known issues
 
-None at the moment
+The increased sector size will cause minor issues if you go back to a stock game with the same save. If you want your save to stay 100% compatible with the unmodded game, revert the sector size to 8x8 in the `LargeShipPatcher.xml` file.
 
 #### License
 This is free and unencumbered software released into the public domain.
